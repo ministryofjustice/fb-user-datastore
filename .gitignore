@@ -63,3 +63,9 @@ bower.json
 
 # Ignore node_modules
 node_modules/
+
+# Ignore Rubymine idea folder
+.idea/
+
+# Ignore macOS file
+.DS_Store
