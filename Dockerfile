@@ -9,10 +9,10 @@ ENV RAILS_ROOT /var/www/fb-user-datastore
 RUN mkdir -p $RAILS_ROOT
 WORKDIR $RAILS_ROOT
 
-RUN gem install bundler
 COPY . $RAILS_ROOT
 
 ARG BUNDLE_FLAGS="--without development test"
+RUN gem install bundler
 RUN bundle install --jobs 2 --retry 3 --no-cache --deployment ${BUNDLE_FLAGS}
 
 ADD https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem ./rds-combined-ca-bundle.pem
