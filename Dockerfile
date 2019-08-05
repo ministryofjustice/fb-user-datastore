@@ -12,6 +12,7 @@ WORKDIR $RAILS_ROOT
 COPY . $RAILS_ROOT
 
 ARG BUNDLE_FLAGS="--without development test"
+ENV BUNDLER_VERSION 2.0.2
 RUN gem install bundler
 RUN bundle install --jobs 2 --retry 3 --no-cache --deployment ${BUNDLE_FLAGS}
 
