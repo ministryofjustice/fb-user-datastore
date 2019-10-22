@@ -1,4 +1,3 @@
-require 'swagger_helper'
 require 'securerandom'
 
 RSpec.describe 'mobile signin' do

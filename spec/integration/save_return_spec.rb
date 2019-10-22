@@ -1,5 +1,3 @@
-require 'swagger_helper'
-
 RSpec.describe 'save and return record' do
   before :each do
     allow_any_instance_of(ApplicationController).to receive(:disable_jwt?).and_return(true)
