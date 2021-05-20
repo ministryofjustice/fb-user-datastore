@@ -10,8 +10,8 @@ RSpec.describe ActionController::Base do
       end
     end
 
-    it 'calls raven (sentry) with exception' do
-      expect(Raven).to receive(:capture_exception).and_return(nil)
+    it 'calls sentry with exception' do
+      expect(Sentry).to receive(:capture_exception).and_return(nil)
       get :index, format: :json
     end
   end
@@ -24,8 +24,8 @@ RSpec.describe ActionController::Base do
       end
     end
 
-    it 'does not call raven (sentry)' do
-      expect(Raven).to_not receive(:capture_exception)
+    it 'does not call Sentry' do
+      expect(Sentry).to_not receive(:capture_exception)
       get :index, format: :json
     end
   end
