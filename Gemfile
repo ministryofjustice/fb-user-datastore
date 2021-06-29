@@ -8,7 +8,7 @@ gem 'metrics_adapter', '0.2.0'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 5.3'
 gem 'jwt'
-gem 'sentry-rails', '~> 4.5.1'
+gem 'sentry-rails', '~> 4.5.2'
 gem 'sentry-ruby', '~> 4.5.2'
 
 group :development, :test do
