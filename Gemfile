@@ -8,8 +8,8 @@ gem 'metrics_adapter', '0.2.0'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 5.3'
 gem 'jwt'
-gem 'sentry-rails', '~> 4.5.2'
-gem 'sentry-ruby', '~> 4.5.2'
+gem 'sentry-rails', '~> 4.6.0'
+gem 'sentry-ruby', '~> 4.6.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
