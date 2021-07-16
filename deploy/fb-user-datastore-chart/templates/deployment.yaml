@@ -6,6 +6,11 @@ metadata:
   name: "fb-user-datastore-api-{{ .Values.environmentName }}"
 spec:
   replicas: 25
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 50%
   selector:
     matchLabels:
       app: "fb-user-datastore-api-{{ .Values.environmentName }}"
