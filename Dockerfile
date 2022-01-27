@@ -27,4 +27,4 @@ ENV APP_PORT 3000
 EXPOSE $APP_PORT
 
 ARG RAILS_ENV=production
-CMD bundle exec rake db:migrate && bundle exec rails s -e ${RAILS_ENV} -p ${APP_PORT} --binding=0.0.0.0
+CMD bundle exec rake db:migrate:ignore_concurrent && bundle exec rails s -e ${RAILS_ENV} -p ${APP_PORT} --binding=0.0.0.0
