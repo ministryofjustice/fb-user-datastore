@@ -8,8 +8,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: {{ .Values.strategy.web.maxSurge }}
-      maxUnavailable: {{ .Values.strategy.web.maxUnavailable }}
+      maxSurge: {{ .Values.strategy.maxSurge }}
+      maxUnavailable: {{ .Values.strategy.maxUnavailable }}
   selector:
     matchLabels:
       app: "fb-user-datastore-api-{{ .Values.environmentName }}"
