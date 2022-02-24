@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get '/health', to: 'health#show'
+  get '/readiness', to: 'health#readiness'
 
   get '/service/:service_slug/user/:user_id', to: 'user_data#show'
   post '/service/:service_slug/user/:user_id', to: 'user_data#create_or_update'
