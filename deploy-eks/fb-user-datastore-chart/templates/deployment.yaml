@@ -1,11 +1,15 @@
 ---
-# web front-end
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: "fb-user-datastore-api-{{ .Values.environmentName }}"
 spec:
-  replicas: 25
+  replicas: {{ .Values.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{ .Values.strategy.web.maxSurge }}
+      maxUnavailable: {{ .Values.strategy.web.maxUnavailable }}
   selector:
     matchLabels:
       app: "fb-user-datastore-api-{{ .Values.environmentName }}"
@@ -24,15 +28,26 @@ spec:
         securityContext:
           runAsUser: 1001
         imagePullPolicy: Always
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sleep", "10"]
         ports:
           - containerPort: 3000
-        readinessProbe:
+        livenessProbe:
           httpGet:
             path: /health
             port: 3000
-          initialDelaySeconds: 15
-          periodSeconds: 5
-          successThreshold: 1
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 3000
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
         # non-secret env vars
         # defined in config_map.yaml
         envFrom:
