@@ -12,7 +12,9 @@ jobs:
           aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker: &remote_docker
+          version: 20.10.11
+          docker_layer_caching: true
       - run:
           name: make spec
           command: make spec
@@ -26,7 +28,7 @@ jobs:
     docker: *ecr_base_image
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker: *remote_docker
       - run: &base_environment_variables
           name: Setup base environment variable
           command: |
@@ -46,7 +48,7 @@ jobs:
     docker: *ecr_base_image
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker: *remote_docker
       - add_ssh_keys: &ssh_keys
           fingerprints:
             - "9f:66:01:8b:19:3c:0e:40:6f:b8:e0:11:a4:43:09:af"
@@ -66,7 +68,7 @@ jobs:
     docker: *ecr_base_image
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker: *remote_docker
       - add_ssh_keys: *ssh_keys
       - run: *base_environment_variables
       - run: *deploy_scripts
@@ -84,7 +86,7 @@ jobs:
     docker: *ecr_base_image
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker: *remote_docker
       - add_ssh_keys: *ssh_keys
       - run: *base_environment_variables
       - run: *deploy_scripts
@@ -106,7 +108,7 @@ jobs:
     docker: *ecr_base_image
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker: *remote_docker
       - add_ssh_keys: *ssh_keys
       - run: *base_environment_variables
       - run: *deploy_scripts
@@ -127,7 +129,7 @@ jobs:
     docker: *ecr_base_image
     resource_class: large
     steps:
-      - setup_remote_docker
+      - setup_remote_docker: *remote_docker
       - run: *deploy_scripts
       - run:
           name: Run acceptance tests
@@ -136,7 +138,7 @@ jobs:
   smoke_tests:
     docker: *ecr_base_image
     steps:
-      - setup_remote_docker
+      - setup_remote_docker: *remote_docker
       - run: *deploy_scripts
       - run:
           name: Run smoke tests
