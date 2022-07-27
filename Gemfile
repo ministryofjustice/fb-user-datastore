@@ -9,7 +9,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 5.6'
 gem 'jwt'
 gem 'sentry-rails', '~> 5.3.1'
-gem 'sentry-ruby', '~> 5.3.1'
+gem 'sentry-ruby', '~> 5.4.1'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
