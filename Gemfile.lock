@@ -206,10 +206,10 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.3)
-    sentry-rails (5.4.2)
+    sentry-rails (5.5.0)
       railties (>= 5.0)
-      sentry-ruby (~> 5.4.2)
-    sentry-ruby (5.4.2)
+      sentry-ruby (~> 5.5.0)
+    sentry-ruby (5.5.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
     shellany (0.0.1)
     shoulda-matchers (5.2.0)
@@ -242,7 +242,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.6.0)
+    zeitwerk (2.6.1)
 
 PLATFORMS
   ruby
@@ -262,8 +262,8 @@ DEPENDENCIES
   puma (~> 5.6)
   rails (~> 6.1.7, < 7.0.0.0)
   rspec-rails (>= 3.5.0)
-  sentry-rails (~> 5.4.2)
-  sentry-ruby (~> 5.4.2)
+  sentry-rails (~> 5.5.0)
+  sentry-ruby (~> 5.5.0)
   shoulda-matchers (~> 5.2)
   simplecov
   simplecov-console
