@@ -9,6 +9,10 @@ WORKDIR /app
 
 COPY Gemfile* .ruby-version ./
 
+COPY --from=golang:1.19-alpine /usr/local/go/ /usr/local/go/
+ENV PATH="/usr/local/go/bin:${PATH}"
+RUN go install github.com/tsenart/vegeta@latest
+
 ARG BUNDLE_FLAGS
 RUN gem install bundler
 RUN bundle install --jobs 2 --retry 3 --no-cache ${BUNDLE_FLAGS}

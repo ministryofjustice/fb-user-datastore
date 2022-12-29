@@ -148,31 +148,32 @@ workflows:
   version: 2
   test_and_build:
     jobs:
-      - test
+      # - test
       - build_and_push_image:
-          requires:
-            - test
+          # requires:
+          #   - test
           filters:
             branches:
               only:
                 - master
-      - deploy_to_test_dev:
-          requires:
-            - build_and_push_image
+                - update-readiness-endpoint
+      # - deploy_to_test_dev:
+      #     requires:
+      #       - build_and_push_image
       - deploy_to_test_production:
           requires:
             - build_and_push_image
-      - acceptance_tests:
-          requires:
-            - deploy_to_test_dev
-            - deploy_to_test_production
-      - deploy_to_live_dev:
-          requires:
-            - acceptance_tests
-      - deploy_to_live_production:
-          requires:
-            - acceptance_tests
-      - smoke_tests:
-          requires:
-            - deploy_to_live_dev
-            - deploy_to_live_production
+      # - acceptance_tests:
+      #     requires:
+      #       - deploy_to_test_dev
+      #       - deploy_to_test_production
+      # - deploy_to_live_dev:
+      #     requires:
+      #       - acceptance_tests
+      # - deploy_to_live_production:
+      #     requires:
+      #       - acceptance_tests
+      # - smoke_tests:
+      #     requires:
+      #       - deploy_to_live_dev
+      #       - deploy_to_live_production
