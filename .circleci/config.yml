@@ -148,11 +148,12 @@ workflows:
   version: 2
   test_and_build:
     jobs:
-      - test
-      - build_and_push_image:
+      - test:
           context: &context
             - moj-forms
             - moj-forms-platform-apps
+      - build_and_push_image:
+          context: *context
           requires:
             - test
           filters:
