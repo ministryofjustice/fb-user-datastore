@@ -1,4 +1,4 @@
-FROM ruby:2.7.7-alpine3.16
+FROM ruby:3.1.3-alpine3.16
 
 RUN apk add --update build-base postgresql-contrib postgresql-dev bash libcurl
 
