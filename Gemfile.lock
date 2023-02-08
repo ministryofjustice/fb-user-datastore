@@ -74,6 +74,7 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
+    date (3.3.3)
     diff-lcs (1.5.0)
     docile (1.4.0)
     dotenv (2.8.1)
@@ -126,6 +127,11 @@ GEM
     minitest (5.17.0)
     msgpack (1.6.0)
     nenv (0.3.0)
+    net-imap (0.3.4)
+      date
+      net-protocol
+    net-pop (0.1.2)
+      net-protocol
     net-protocol (0.2.1)
       timeout
     net-smtp (0.3.3)
@@ -250,6 +256,8 @@ DEPENDENCIES
   guard-shell
   jwt
   listen
+  net-imap
+  net-pop
   net-smtp
   pg (>= 0.18, < 2.0)
   puma (~> 6.0)
