@@ -31,3 +31,4 @@ group :test do
 end
 
 gem 'tzinfo-data'
+gem 'net-smtp', require: false
