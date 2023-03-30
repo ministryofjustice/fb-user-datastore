@@ -25,6 +25,7 @@ stop:
 spec: build
 	$(DOCKER_COMPOSE) up -d db
 	./scripts/wait_for_db.sh db postgres
+	$(DOCKER_COMPOSE) up -d app
 	$(DOCKER_COMPOSE) run -e RAILS_ENV=test --rm app bundle exec rspec
 
 build_and_push: install_build_dependencies login
