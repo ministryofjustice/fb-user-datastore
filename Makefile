@@ -12,7 +12,7 @@ login: init
 	@eval $(shell aws ecr get-login --no-include-email --region eu-west-2)
 
 build: stop
-	$(DOCKER_COMPOSE) build --build-arg BUNDLE_FLAGS=''
+	$(DOCKER_COMPOSE) build --no-cache --build-arg BUNDLE_FLAGS=''
 
 serve: build
 	$(DOCKER_COMPOSE) up -d db
