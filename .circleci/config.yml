@@ -162,7 +162,7 @@ workflows:
             branches:
               only:
                 - master
-                - save-and-return-store
+                # - save-and-return-store
       - deploy_to_test_dev:
           context: *context
           requires:
