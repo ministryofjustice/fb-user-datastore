@@ -1,3 +1,4 @@
+# Used by the legacy publisher, see SaveAndReturnController for v2
 class SaveReturnsController < ApplicationController
   def create
     save_return = SaveReturn.find_by(service_slug: params[:service_slug],

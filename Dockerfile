@@ -1,6 +1,6 @@
 FROM ruby:3.1.3-alpine3.16
 
-RUN apk add --update build-base postgresql-contrib postgresql-dev bash libcurl
+RUN apk add --update build-base postgresql-contrib postgresql-dev bash libcurl gcompat
 
 RUN addgroup -g 1001 -S appgroup && \
   adduser -u 1001 -S appuser -G appgroup

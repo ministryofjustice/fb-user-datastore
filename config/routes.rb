@@ -5,6 +5,11 @@ Rails.application.routes.draw do
   get '/service/:service_slug/user/:user_id', to: 'user_data#show'
   post '/service/:service_slug/user/:user_id', to: 'user_data#create_or_update'
 
+  # save and return v2
+  get '/service/:service_slug/saved/:user_id', to: 'save_and_return#show'
+  post '/service/:service_slug/saved/:user_id', to: 'save_and_return#create'
+  #
+
   post '/service/:service_slug/savereturn/setup/email/add', to: 'emails#add'
   post '/service/:service_slug/savereturn/setup/email/validate', to: 'emails#validate'
 
