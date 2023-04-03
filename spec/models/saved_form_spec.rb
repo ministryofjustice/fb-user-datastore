@@ -1,5 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe SavedForm, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should validate_presence_of(:service_slug) }
+  it { should validate_presence_of(:user_id) }
+
+  it 'should set the default values' do
+    expect(subject.attempts).to eq(0.0)
+    expect(subject.active).to eq(true)
+  end
 end
