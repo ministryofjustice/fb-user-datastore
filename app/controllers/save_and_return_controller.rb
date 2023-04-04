@@ -11,7 +11,8 @@ class SaveAndReturnController < ApplicationController
   end
   
   def show
-    render json: { SavedForm.find(params[:uuid]) }, status: :ok, format: :json
+    @saved = SavedForm.find(params[:uuid])
+    render json: @saved.to_json, status: :ok, format: :json
   end
 
   def save_progress_params
