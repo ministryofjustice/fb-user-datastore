@@ -6,6 +6,39 @@ RSpec.describe SaveAndReturnController, type: :controller do
     request.env['CONTENT_TYPE'] = 'application/json'
   end
 
+  let(:json_hash) do
+    {
+      errors: {},
+      email: "email@email.com",
+      page_slug: "page-slug",
+      secret_question: "some text",
+      secret_answer: "some more text",
+      service_slug: "some-slug",
+      service_version: "27dc30c9-f7b8-4dec-973a-bd153f6797df",
+      user_id: "8acfb3db90002a5fc5b43e71638fc709",
+      user_token: "b9cca34d4331399c5f461c0ba1c406aa",
+      user_data_payload: {
+        name_text_1: "Name"
+      },
+      validation_context: "null"
+    }
+  end
+
+  describe 'GET #show' do
+    before do
+      post :create, params: { service_slug: 'some-slug' },
+                        body: json_hash.to_json
+    end
+
+    it 'gets the form' do
+      uuid = SavedForm.first.id
+
+      get :show, params: { service_slug: 'service-slug', uuid: uuid }
+
+      expect(response.status).to be(200)
+    end
+  end
+
   describe 'POST #create' do
     let(:json_hash) do
       {
