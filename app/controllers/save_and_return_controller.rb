@@ -9,6 +9,10 @@ class SaveAndReturnController < ApplicationController
       render json: {}, status: :error, format: :json
     end
   end
+  
+  def show
+    render json: { SavedForm.find(params[:uuid]) }, status: :ok, format: :json
+  end
 
   def save_progress_params
     params.permit!
