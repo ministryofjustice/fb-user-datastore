@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   post '/service/:service_slug/user/:user_id', to: 'user_data#create_or_update'
 
   # save and return v2
-  # get '/service/:service_slug/saved', to: 'save_and_return#show'
+  get '/service/:service_slug/saved/:uuid', to: 'save_and_return#show'
   post '/service/:service_slug/saved', to: 'save_and_return#create'
   #
 
