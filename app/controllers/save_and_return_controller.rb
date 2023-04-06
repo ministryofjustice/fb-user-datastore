@@ -12,6 +12,9 @@ class SaveAndReturnController < ApplicationController
   
   def show
     @saved = SavedForm.find(params[:uuid])
+
+    render json: {}, status: :not_found, format: :json if @saved == nil and return
+
     render json: @saved.to_json, status: :ok, format: :json
   end
 

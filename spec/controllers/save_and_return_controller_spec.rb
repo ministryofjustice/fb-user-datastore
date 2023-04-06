@@ -37,6 +37,14 @@ RSpec.describe SaveAndReturnController, type: :controller do
 
       expect(response.status).to be(200)
     end
+
+    describe 'when not found' do
+      it 'returns 404' do
+        get :show, params: { service_slug: 'some-slug', uuid: 'i-am-an-id-that-does-not-exist' }, body: {}.to_json
+
+        expect(response.status).to eql(404)
+      end
+    end
   end
 
   describe 'POST #create' do
