@@ -11,38 +11,46 @@ RSpec.describe SavedForm, type: :model do
   describe '#invalidated' do
     let(:model) { SavedForm.new(user_id: '123', user_token: '456', user_data_payload: 'q1 => answer', secret_answer: 'hello', active: true, service_slug: 'some_slug') }
     
-    it 'should consider the model invalidated if user id is empty' do
-      expect(model.invalidated?).to be(false)
-      model.user_id = nil
-      expect(model.invalidated?).to be(true)
-      model.user_id = ""
-      expect(model.invalidated?).to be(true)
+    context 'user id is empty' do
+      it 'should consider the model invalidated' do
+        expect(model.invalidated?).to be(false)
+        model.user_id = nil
+        expect(model.invalidated?).to be(true)
+        model.user_id = ""
+        expect(model.invalidated?).to be(true)
+      end
     end
 
-    it 'should consider the model invalidated if user token is empty' do
-      expect(model.invalidated?).to be(false)
-      model.user_token = nil
-      expect(model.invalidated?).to be(true)
-      model.user_token = ""
-      expect(model.invalidated?).to be(true)
+    context 'user token is empty' do
+      it 'should consider the model invalidated' do
+        expect(model.invalidated?).to be(false)
+        model.user_token = nil
+        expect(model.invalidated?).to be(true)
+        model.user_token = ""
+        expect(model.invalidated?).to be(true)
+      end
     end
 
-    it 'should consider the model invalidated if attempts >3' do
-      expect(model.invalidated?).to be(false)
-      model.increment_attempts!
-      expect(model.invalidated?).to be(false)
-      model.increment_attempts!
-      expect(model.invalidated?).to be(false)
-      model.increment_attempts!
-      expect(model.invalidated?).to be(false)
-      model.increment_attempts!
-      expect(model.invalidated?).to be(true)
+    context 'attempts above max limit (3)' do
+      it 'should consider the model invalidated' do
+        expect(model.invalidated?).to be(false)
+        model.increment_attempts!
+        expect(model.invalidated?).to be(false)
+        model.increment_attempts!
+        expect(model.invalidated?).to be(false)
+        model.increment_attempts!
+        expect(model.invalidated?).to be(false)
+        model.increment_attempts!
+        expect(model.invalidated?).to be(true)
+      end
     end
 
-    it 'should consider the model invalidated if marked inactive' do
-      expect(model.invalidated?).to be(false)
-      model.active = false
-      expect(model.invalidated?).to be(true)
+    context 'record marked inactive' do
+      it 'should consider the model invalidated' do
+        expect(model.invalidated?).to be(false)
+        model.active = false
+        expect(model.invalidated?).to be(true)
+      end
     end
   end
 
