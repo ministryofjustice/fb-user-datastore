@@ -46,7 +46,7 @@ RSpec.describe SavedForm, type: :model do
     end
   end
 
-  context '#invalidate_user_fields' do
+  describe '#invalidate_user_fields' do
     let(:model) { SavedForm.new(user_id: '123', user_token: '456', user_data_payload: 'q1 => answer', secret_answer: 'hello', active: true, service_slug: 'some_slug') }
 
     it 'should remove sensitive data and invalidate the record' do
