@@ -8,7 +8,7 @@ RSpec.describe SavedForm, type: :model do
     expect(subject.active).to eq(true)
   end
 
-  context '#invalidated' do
+  describe '#invalidated' do
     let(:model) { SavedForm.new(user_id: '123', user_token: '456', user_data_payload: 'q1 => answer', secret_answer: 'hello', active: true, service_slug: 'some_slug') }
     
     it 'should consider the model invalidated if user id is empty' do
