@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   # save and return v2
   get '/service/:service_slug/saved/:uuid', to: 'save_and_return#show'
   post '/service/:service_slug/saved', to: 'save_and_return#create'
+  post '/service/:service_slug/saved/:uuid/increment', to: 'save_and_return#increment'
+  post '/service/:service_slug/saved/:uuid/invalidate', to: 'save_and_return#invalidate'
+
   #
 
   post '/service/:service_slug/savereturn/setup/email/add', to: 'emails#add'
