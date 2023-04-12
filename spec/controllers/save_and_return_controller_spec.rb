@@ -45,6 +45,121 @@ RSpec.describe SaveAndReturnController, type: :controller do
         expect(response.status).to eql(404)
       end
     end
+
+    describe 'when record has been invalidated' do
+      it 'returns 422' do
+        uuid = SavedForm.first.id
+        SavedForm.first.invalidate_user_fields!
+
+        get :show, params: { service_slug: 'some-slug', uuid: uuid }, body: {}.to_json
+
+        expect(response.status).to eql(422)
+      end
+    end
+  end
+
+  describe 'UPDATE #invalidate' do
+  before do
+    post :create, params: { service_slug: 'some-slug' },
+                      body: json_hash.to_json
+  end
+
+    describe 'record is valid' do
+      it 'should invalidate the record' do
+        uuid = SavedForm.first.id
+
+        post :invalidate, params: { service_slug: 'some-slug', uuid: uuid }, body: {}.to_json
+
+        expect(SavedForm.first.invalidated?).to eql(true)
+      end
+
+      it 'should return 202 accepted' do
+        uuid = SavedForm.first.id
+
+        post :invalidate, params: { service_slug: 'some-slug', uuid: uuid }, body: {}.to_json
+
+        expect(response.status).to eql(202)
+      end
+    end
+
+    describe 'record cannot be invalidated' do
+      describe 'record does not exist' do
+        it 'should return 404' do
+          post :invalidate, params: { service_slug: 'some-slug', uuid: 'i-do-not-exist' }, body: {}.to_json
+          
+          expect(response.status).to eql(404)
+        end
+      end
+
+      describe 'record already invalid' do
+        it 'should return 422' do
+          uuid = SavedForm.first.id
+          SavedForm.first.invalidate_user_fields!
+  
+          post :invalidate, params: { service_slug: 'some-slug', uuid: uuid }, body: {}.to_json
+  
+          expect(response.status).to eql(422)
+        end
+      end
+    end
+  end
+
+  describe 'UPDATE #increment' do
+    before do
+      post :create, params: { service_slug: 'some-slug' },
+                        body: json_hash.to_json
+    end
+
+    describe 'happy path' do
+      it 'should increment the attempts count' do
+        uuid = SavedForm.first.id
+
+        post :increment, params: { service_slug: 'some-slug', uuid: uuid }
+
+        expect(SavedForm.first.attempts).to eql(1)
+        expect(SavedForm.first.invalidated?).to eql(false)
+      end
+
+      it 'should return ok' do
+        uuid = SavedForm.first.id
+
+        post :increment, params: { service_slug: 'some-slug', uuid: uuid }
+
+        expect(response.status).to eql(200)
+      end
+    end
+
+    describe 'record does not exist' do
+      it 'should return not found' do
+        post :increment, params: { service_slug: 'some-slug', uuid: 'does-not-exist' }
+
+        expect(response.status).to eql(404)
+      end
+    end
+
+    describe 'record is invalid' do
+      it 'should return unprocessable if too many attempts' do
+        uuid = SavedForm.first.id
+
+        3.times do
+           SavedForm.first.increment_attempts!
+        end
+
+        post :increment, params: { service_slug: 'some-slug', uuid: uuid }
+
+        expect(response.status).to eql(422)
+      end
+
+      it 'should return unprocessable if invalidated' do
+        uuid = SavedForm.first.id
+
+        SavedForm.first.invalidate_user_fields!
+
+        post :increment, params: { service_slug: 'some-slug', uuid: uuid }
+
+        expect(response.status).to eql(422)
+      end
+    end
   end
 
   describe 'POST #create' do

@@ -15,7 +15,39 @@ class SaveAndReturnController < ApplicationController
 
     render json: {}, status: :not_found, format: :json if @saved == nil and return
 
+    if @saved.invalidated?
+      render json: {}, status: :unprocessable_entity, format: :json and return
+    end
+
     render json: @saved.to_json, status: :ok, format: :json
+  end
+
+  def increment
+    @saved = SavedForm.find(params[:uuid])
+
+    render json: {}, status: :not_found, format: :json if @saved == nil and return
+
+    if @saved.attempts.to_i >= 3 || @saved.invalidated?
+      render json: {}, status: :unprocessable_entity, format: :json and return
+    end
+
+    @saved.increment_attempts!
+
+    render json: {}, status: :ok, format: :json
+  end
+
+  def invalidate
+    @saved = SavedForm.find(params[:uuid])
+
+    render json: {}, status: :not_found, format: :json if @saved == nil and return
+
+    if @saved.invalidated?
+      render json: {}, status: :unprocessable_entity, format: :json and return
+    end
+
+    @saved.invalidate_user_fields!
+
+    render json: {}, status: :accepted, format: :json
   end
 
   def save_progress_params
