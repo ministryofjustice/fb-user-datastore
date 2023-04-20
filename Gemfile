@@ -7,8 +7,8 @@ gem 'rails', '~> 6.1.7.1', '< 7.0.0.0'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.1'
 gem 'jwt'
-gem 'sentry-rails', '~> 5.8.0'
-gem 'sentry-ruby', '~> 5.8.0'
+gem 'sentry-rails', '~> 5.9.0'
+gem 'sentry-ruby', '~> 5.9.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
