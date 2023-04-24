@@ -60,8 +60,6 @@ RSpec.describe SaveAndReturnController, type: :controller do
         3.times do
           SavedForm.first.increment_attempts!
         end
-        
-        SavedForm.first.save!
 
         get :show, params: { service_slug: 'some-slug', uuid: uuid }, body: {}.to_json
 
