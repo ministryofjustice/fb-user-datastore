@@ -15,6 +15,10 @@ class SaveAndReturnController < ApplicationController
 
     render json: {}, status: :not_found, format: :json if @saved == nil and return
 
+    if @saved.attempts >= 3
+      render json: {}, status: :bad_request, format: :json and return
+    end
+
     if @saved.invalidated?
       render json: {}, status: :unprocessable_entity, format: :json and return
     end
