@@ -4,7 +4,7 @@ class SavedForm < ApplicationRecord
 
   def invalidated?
     return true if self.active == false
-    return true if self.attempts > 3
+    return true if self.attempts >= 3
     return true if self.user_id.blank? || self.user_token.blank?
     false
   end

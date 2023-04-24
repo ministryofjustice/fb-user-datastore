@@ -34,7 +34,6 @@ RSpec.describe SaveAndReturnController, type: :controller do
       uuid = SavedForm.first.id
 
       get :show, params: { service_slug: 'service-slug', uuid: uuid }
-
       expect(response.status).to be(200)
     end
 
@@ -54,6 +53,19 @@ RSpec.describe SaveAndReturnController, type: :controller do
         get :show, params: { service_slug: 'some-slug', uuid: uuid }, body: {}.to_json
 
         expect(response.status).to eql(422)
+      end
+
+      it 'returns 400 if too many attemtps' do
+        uuid = SavedForm.first.id
+        3.times do
+          SavedForm.first.increment_attempts!
+        end
+        
+        SavedForm.first.save!
+
+        get :show, params: { service_slug: 'some-slug', uuid: uuid }, body: {}.to_json
+
+        expect(response.status).to eql(400)
       end
     end
   end

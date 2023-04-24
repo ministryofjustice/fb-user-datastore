@@ -10,7 +10,7 @@ class CreateSavedForms < ActiveRecord::Migration[6.1]
       t.string :user_id
       t.string :user_token
       t.text :user_data_payload
-      t.numeric :attempts, default: 0
+      t.integer :attempts, default: 0
       t.boolean :active, default: true
 
       t.timestamps
