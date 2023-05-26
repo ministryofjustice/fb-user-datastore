@@ -162,7 +162,7 @@ workflows:
             branches:
               only:
                 - master
-                - main
+                - rails-7
       - deploy_to_test_dev:
           context: *context
           requires:
