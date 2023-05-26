@@ -27,11 +27,11 @@ class SaveReturnsController < ApplicationController
     magic_links = MagicLink.where(service_slug: params[:service_slug],
                                   encrypted_email: params[:encrypted_email])
 
-    ActiveRecord::Base.transaction do
+    # ActiveRecord::Base.transaction do
       if save_returns.destroy_all && emails.destroy_all && magic_links.destroy_all
         return render json: {}, status: :ok
       end
-    end
+    # end
   end
 
   private
