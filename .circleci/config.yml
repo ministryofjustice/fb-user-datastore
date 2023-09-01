@@ -176,7 +176,7 @@ workflows:
   test_and_build:
     jobs:
       - login-to-aws:
-          context: &moj-forms-context
+          context: &context
             - moj-forms
             - moj-forms-platform-apps
       - test:
