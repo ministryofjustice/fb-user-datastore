@@ -191,6 +191,7 @@ workflows:
             branches:
               only:
                 - master
+                - ecr-migration
       - deploy_to_test_dev:
           context: *context
           requires:
