@@ -5,7 +5,7 @@ ruby File.read(".ruby-version").strip
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'rails', '~> 7.0.6'
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 6.3'
+gem 'puma', '~> 6.4'
 gem 'jwt'
 gem 'sentry-rails', '~> 5.11.0'
 gem 'sentry-ruby', '~> 5.11.0'
