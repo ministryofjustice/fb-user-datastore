@@ -50,8 +50,8 @@ RSpec.describe 'UserData API', type: :request do
             describe 'the timestamp key' do
               # have to work around formatting and precision issues here
               it 'is set to the updated_at value of the user data' do
-                expect( DateTime.parse(json['timestamp']).to_s(:iso_8601) )\
-                  .to eq(user_data.updated_at.to_datetime.to_s(:iso_8601))
+                expect( DateTime.parse(json['timestamp']).to_fs(:iso_8601) )\
+                  .to eq(user_data.updated_at.to_datetime.to_fs(:iso_8601))
               end
 
               it 'is formatted as ISO-8601' do
