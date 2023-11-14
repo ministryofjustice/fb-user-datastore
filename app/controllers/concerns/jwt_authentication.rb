@@ -20,7 +20,7 @@ module Concerns
     private
 
     def verify_token!
-      unless request.headers['x-access-token-v2']
+      unless access_token
         raise Exceptions::TokenNotPresentError
       end
 
@@ -28,40 +28,54 @@ module Concerns
     end
 
     def verify
-      token = request.headers['x-access-token-v2']
-      leeway = ENV['MAX_IAT_SKEW_SECONDS']
+      hmac_secret = public_key(params[:service_slug])
+      @jwt_payload, _header = JWT.decode(
+        access_token,
+        hmac_secret,
+        true,
+        {
+          exp_leeway: leeway,
+          algorithm: 'RS256'
+        }
+      )
 
-      begin
-        hmac_secret = public_key(params[:service_slug])
-        @jwt_payload, _header = JWT.decode(
-          token,
-          hmac_secret,
-          true,
-          {
-            exp_leeway: leeway,
-            algorithm: 'RS256'
-          }
-        )
+      # NOTE: verify_iat used to be in the JWT gem, but was removed in v2.2
+      # so we have to do it manually
+      iat_skew = @jwt_payload['iat'].to_i - Time.current.to_i
 
-        # NOTE: verify_iat used to be in the JWT gem, but was removed in v2.2
-        # so we have to do it manually
-        iat_skew = @jwt_payload['iat'].to_i - Time.current.to_i
-
-        if iat_skew.abs > leeway.to_i
-          raise Exceptions::TokenNotValidError.new
-        end
-      rescue StandardError
-        raise Exceptions::TokenNotValidError.new
+      if iat_skew.abs > leeway
+        Rails.logger.warn("iat skew is #{iat_skew}, max is #{leeway} - INVALID")
+        raise Exceptions::TokenNotValidError
       end
+
+      Rails.logger.debug('token is valid')
+    rescue StandardError => e
+      Rails.logger.warn("Couldn't parse that token - error #{e}")
+      raise Exceptions::TokenNotValidError
     end
 
+    def leeway
+      ENV['MAX_IAT_SKEW_SECONDS'].to_i
+    end
+
+    def access_token
+      request.headers['x-access-token-v2']
+    end
+
+    def request_id
+      request.headers['x-request-id']
+    end
+
+    # TODO: this method seems to not be in use anymore
+    # Legacy FB forms are using v2 token cache too
+    # Confirm to be sure and cleanup code/tests
     def service_token(service_slug)
       service = ServiceTokenService.new(service_slug: service_slug)
       service.get
     end
 
     def public_key(service_slug)
-      service = ServiceTokenService.new(service_slug: service_slug)
+      service = ServiceTokenService.new(service_slug:, request_id:)
       service.public_key
     end
   end

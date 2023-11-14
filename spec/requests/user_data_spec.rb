@@ -4,9 +4,11 @@ RSpec.describe 'UserData API', type: :request do
   let(:headers) {
     {
       'content-type' => 'application/json',
-      'x-access-token-v2' => jwt
+      'x-access-token-v2' => jwt,
+      'X-Request-Id' => request_id
     }
   }
+  let(:request_id) { '12345' }
   let(:service_slug) { 'my-service' }
   let(:user_identifier) { SecureRandom::uuid }
   let(:jwt) { JWT.encode({sub: user_identifier, iat: Time.current.to_i}, private_key, 'RS256') }
@@ -17,7 +19,7 @@ RSpec.describe 'UserData API', type: :request do
   let(:fake_service) { double(:service) }
 
   before do
-    allow(ServiceTokenService).to receive(:new).with(service_slug: service_slug).and_return(fake_service)
+    allow(ServiceTokenService).to receive(:new).with(service_slug:, request_id:).and_return(fake_service)
     allow(fake_service).to receive(:public_key).and_return(public_key)
   end
 
@@ -27,7 +29,7 @@ RSpec.describe 'UserData API', type: :request do
 
       context 'with a valid token' do
         before do
-          get url, headers: headers
+          get url, headers:
         end
 
         context 'when the user data exists' do
@@ -86,7 +88,7 @@ RSpec.describe 'UserData API', type: :request do
 
   describe 'POST /service/:service_slug/:user/:user_identifier' do
     let(:post_request) do
-      post url, params: params.to_json, headers: headers
+      post url, params: params.to_json, headers:
     end
 
     context 'to /service/:service_slug/user/:user_identifier' do

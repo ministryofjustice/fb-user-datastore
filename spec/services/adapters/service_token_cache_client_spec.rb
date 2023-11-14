@@ -21,7 +21,7 @@ RSpec.describe Adapters::ServiceTokenCacheClient do
     end
   end
 
-  subject { described_class.new(root_url: 'http://www.example.com') }
+  subject { described_class.new(root_url: 'http://www.example.com', request_id: '12345') }
 
   describe '#get' do
     let(:service_slug) { 'my-service' }
@@ -73,8 +73,19 @@ RSpec.describe Adapters::ServiceTokenCacheClient do
       double('response', body: {token: encoded_public_key}.to_json, code: 200)
     end
 
+    let(:expected_headers) do
+      {
+        'X-Request-Id' => '12345',
+        'User-Agent' => 'UserDatastore'
+      }
+    end
+
     it 'returns public key' do
-      expect(Net::HTTP).to receive(:get_response).with(URI('http://www.example.com/service/v2/my-service')).and_return(mock_response)
+      expect(
+        Net::HTTP
+      ).to receive(:get_response).with(
+        URI('http://www.example.com/service/v2/my-service'), expected_headers
+      ).and_return(mock_response)
 
       subject.public_key_for(service_slug)
     end
