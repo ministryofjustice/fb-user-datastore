@@ -230,16 +230,5 @@ RSpec.describe SaveAndReturnController, type: :controller do
         expect(response.status).to eql(500)
       end
     end
-
-    describe 'when bad request' do
-      it 'returns 402' do
-        allow(SavedForm).to receive(:create).and_return(false)
-
-        post :create, params: { service_slug: 'service-slug' },
-                      body: {}.to_json
-
-        expect(response.status).to eql(400)
-      end
-    end
   end
 end

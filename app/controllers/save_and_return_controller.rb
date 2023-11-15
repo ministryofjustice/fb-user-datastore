@@ -1,7 +1,6 @@
 class SaveAndReturnController < ApplicationController
   def create
-    @saved_form = SavedForm.new(save_progress_params.except(:validation_context).except(:errors))
-    render json: {}, status: :bad_request, format: :json and return if !@saved_form.valid?
+    @saved_form = SavedForm.new(save_progress_params)
 
     if @saved_form.save!
       render json: { id: @saved_form.id }, status: :created, format: :json
@@ -9,7 +8,7 @@ class SaveAndReturnController < ApplicationController
       render json: {}, status: :error, format: :json
     end
   end
-  
+
   def show
     @saved = SavedForm.find(params[:uuid])
 
@@ -54,11 +53,12 @@ class SaveAndReturnController < ApplicationController
     render json: {}, status: :accepted, format: :json
   end
 
-  def save_progress_params
-    params.permit!
-    params[:save_and_return].to_h
-  end
+  private
 
-  def destroy
+  def save_progress_params
+    params.slice!(
+      :email, :page_slug, :service_slug, :user_id, :user_token, :service_version,
+      :secret_question, :secret_answer, :secret_question_text, :user_data_payload
+    ).permit!
   end
 end
