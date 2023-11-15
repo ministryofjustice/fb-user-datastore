@@ -191,7 +191,6 @@ workflows:
             branches:
               only:
                 - master
-                - propagate-request-id
       - deploy_to_test_dev:
           context: *context
           requires:
