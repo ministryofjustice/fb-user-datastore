@@ -1,64 +1,64 @@
 class SaveAndReturnController < ApplicationController
-  def create
-    @saved_form = SavedForm.new(save_progress_params.except(:validation_context).except(:errors))
-    render json: {}, status: :bad_request, format: :json and return if !@saved_form.valid?
+  before_action :check_saved_form_exists, except: [:create]
 
-    if @saved_form.save!
-      render json: { id: @saved_form.id }, status: :created, format: :json
+  def create
+    saved_form = SavedForm.new(save_progress_params)
+
+    if saved_form.save
+      render json: { id: saved_form.id }, status: :created
     else
-      render json: {}, status: :error, format: :json
+      render json: {}, status: :internal_server_error
     end
   end
-  
+
   def show
-    @saved = SavedForm.find(params[:uuid])
+    saved = existing_saved_form
 
-    render json: {}, status: :not_found, format: :json if @saved == nil and return
-
-    if @saved.attempts >= 3
-      render json: {}, status: :bad_request, format: :json and return
+    if saved.attempts >= 3
+      render json: {}, status: :bad_request
+    elsif saved.invalidated?
+      render json: {}, status: :unprocessable_entity
+    else
+      render json: saved.to_json, status: :ok
     end
-
-    if @saved.invalidated?
-      render json: {}, status: :unprocessable_entity, format: :json and return
-    end
-
-    render json: @saved.to_json, status: :ok, format: :json
   end
 
   def increment
-    @saved = SavedForm.find(params[:uuid])
+    saved = existing_saved_form
 
-    render json: {}, status: :not_found, format: :json if @saved == nil and return
-
-    if @saved.attempts.to_i >= 3 || @saved.invalidated?
-      render json: {}, status: :unprocessable_entity, format: :json and return
+    if saved.attempts >= 3 || saved.invalidated?
+      render json: {}, status: :unprocessable_entity
+    else
+      saved.increment_attempts!
+      render json: {}, status: :ok
     end
-
-    @saved.increment_attempts!
-
-    render json: {}, status: :ok, format: :json
   end
 
   def invalidate
-    @saved = SavedForm.find(params[:uuid])
+    saved = existing_saved_form
 
-    render json: {}, status: :not_found, format: :json if @saved == nil and return
-
-    if @saved.invalidated?
-      render json: {}, status: :unprocessable_entity, format: :json and return
+    if saved.invalidated?
+      render json: {}, status: :unprocessable_entity
+    else
+      saved.invalidate_user_fields!
+      render json: {}, status: :accepted
     end
-
-    @saved.invalidate_user_fields!
-
-    render json: {}, status: :accepted, format: :json
   end
+
+  private
 
   def save_progress_params
-    params.permit!
-    params[:save_and_return].to_h
+    params.slice!(
+      :email, :page_slug, :service_slug, :user_id, :user_token, :service_version,
+      :secret_question, :secret_answer, :secret_question_text, :user_data_payload
+    ).permit!
   end
 
-  def destroy
+  def existing_saved_form
+    @_existing_saved_form ||= SavedForm.find_by(id: params[:uuid])
+  end
+
+  def check_saved_form_exists
+    render json: {}, status: :not_found unless existing_saved_form
   end
 end

@@ -1,8 +1,9 @@
 class ServiceTokenService
-  attr_reader :service_slug
+  attr_reader :service_slug, :request_id
 
-  def initialize(service_slug:)
+  def initialize(service_slug:, **options)
     @service_slug = service_slug
+    @request_id = options[:request_id]
   end
 
   def get
@@ -16,6 +17,6 @@ class ServiceTokenService
   private
 
   def client
-    @client ||= Adapters::ServiceTokenCacheClient.new
+    @client ||= Adapters::ServiceTokenCacheClient.new(request_id:)
   end
 end
