@@ -222,7 +222,7 @@ RSpec.describe SaveAndReturnController, type: :controller do
   
     describe 'when cant save record' do
       it 'returns 500' do
-        allow_any_instance_of(SavedForm).to receive(:save!).and_return(false)
+        allow_any_instance_of(SavedForm).to receive(:save).and_return(false)
 
         post :create, params: { service_slug: 'service-slug' },
                       body: json_hash.to_json
