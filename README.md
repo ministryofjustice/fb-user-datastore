@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/ministryofjustice/fb-user-datastore/tree/master.svg?style=svg)](https://circleci.com/gh/ministryofjustice/fb-user-datastore/tree/master)
+[![CircleCI](https://circleci.com/gh/ministryofjustice/fb-user-datastore/tree/main.svg?style=svg)](https://circleci.com/gh/ministryofjustice/fb-user-datastore/tree/main)
 
 # fb-user-datastore
 
@@ -26,4 +26,4 @@ make spec
 
 Continuous Integration (CI) is enabled on this project via CircleCI.
 
-On merge to master tests are executed and if green deployed to the test environment. This build can then be promoted to production
+On merge to main tests are executed and if green deployed to the test environment. This build can then be promoted to production
