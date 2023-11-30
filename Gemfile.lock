@@ -136,7 +136,7 @@ GEM
     minitest (5.20.0)
     msgpack (1.7.2)
     nenv (0.3.0)
-    net-imap (0.4.5)
+    net-imap (0.4.7)
       date
       net-protocol
     net-pop (0.1.2)
@@ -145,7 +145,7 @@ GEM
       timeout
     net-smtp (0.4.0)
       net-protocol
-    nio4r (2.5.9)
+    nio4r (2.6.1)
     nokogiri (1.15.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -215,10 +215,10 @@ GEM
       rspec-mocks (~> 3.12)
       rspec-support (~> 3.12)
     rspec-support (3.12.1)
-    sentry-rails (5.13.0)
+    sentry-rails (5.14.0)
       railties (>= 5.0)
-      sentry-ruby (~> 5.13.0)
-    sentry-ruby (5.13.0)
+      sentry-ruby (~> 5.14.0)
+    sentry-ruby (5.14.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
     shellany (0.0.1)
     shoulda-matchers (5.3.0)
@@ -263,9 +263,9 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   puma (~> 6.4)
   rails (~> 7.0.6)
-  rspec-rails (>= 3.5.0)
-  sentry-rails (~> 5.13.0)
-  sentry-ruby (~> 5.13.0)
+  rspec-rails
+  sentry-rails (~> 5.13)
+  sentry-ruby (~> 5.13)
   shoulda-matchers (~> 5.3)
   simplecov
   simplecov-console
