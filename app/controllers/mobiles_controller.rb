@@ -1,4 +1,6 @@
 class MobilesController < ApplicationController
+  DEFAULT_DURATION = 30 # minutes
+
   def add
     supersede_existing_mobiles
 
@@ -36,15 +38,7 @@ class MobilesController < ApplicationController
   end
 
   def duration
-    if params[:duration]
-      params[:duration].to_i.minutes
-    else
-      default_duration
-    end
-  end
-
-  def default_duration
-    30.minutes
+    params.fetch(:duration, DEFAULT_DURATION).to_i.minutes
   end
 
   def mobile_record_params

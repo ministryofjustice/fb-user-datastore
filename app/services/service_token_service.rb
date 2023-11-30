@@ -6,10 +6,6 @@ class ServiceTokenService
     @request_id = options[:request_id]
   end
 
-  def get
-    client.get(service_slug)
-  end
-
   def public_key
     client.public_key_for(service_slug)
   end

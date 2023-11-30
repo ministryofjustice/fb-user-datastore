@@ -15,11 +15,8 @@ class EmailSigninsController < ApplicationController
       expires_at: expires_at
     )
 
-    if magic_link.save
-      return render json: { token: magic_link.id }, status: :created
-    else
-      return render_email_missing_error
-    end
+    magic_link.save!
+    render json: { token: magic_link.id }, status: :created
   end
 
   def validate
@@ -41,9 +38,11 @@ class EmailSigninsController < ApplicationController
       encrypted_email: magic_link.encrypted_email
     )
 
-    return render_save_and_return_missing_error unless save_return
-
-    return render json: { encrypted_details: save_return.encrypted_payload }, status: :ok
+    if save_return
+      render json: { encrypted_details: save_return.encrypted_payload }, status: :ok
+    else
+      render_save_and_return_missing_error
+    end
   end
 
   private
