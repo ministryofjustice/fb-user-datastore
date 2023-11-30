@@ -66,14 +66,6 @@ module Concerns
       request.headers['x-request-id']
     end
 
-    # TODO: this method seems to not be in use anymore
-    # Legacy FB forms are using v2 token cache too
-    # Confirm to be sure and cleanup code/tests
-    def service_token(service_slug)
-      service = ServiceTokenService.new(service_slug: service_slug)
-      service.get
-    end
-
     def public_key(service_slug)
       service = ServiceTokenService.new(service_slug:, request_id:)
       service.public_key

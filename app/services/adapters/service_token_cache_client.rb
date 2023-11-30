@@ -9,12 +9,6 @@ module Adapters
       @request_id = params[:request_id]
     end
 
-    def get(service_slug)
-      url = service_token_uri(service_slug)
-      response = Net::HTTP.get_response(url)
-      JSON.parse(response.body).fetch('token') if response.code.to_i == 200
-    end
-
     def public_key_for(service_slug)
       url = public_key_uri(service_slug)
       response = Net::HTTP.get_response(url, headers)
@@ -32,10 +26,6 @@ module Adapters
         'X-Request-Id' => request_id,
         'User-Agent' => 'UserDatastore'
       }
-    end
-
-    def service_token_uri(service_slug)
-      URI.join(root_url, '/service/', service_slug)
     end
 
     def public_key_uri(service_slug)

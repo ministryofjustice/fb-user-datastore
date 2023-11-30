@@ -1,4 +1,6 @@
 class EmailsController < ApplicationController
+  DEFAULT_DURATION = 120 # minutes
+
   def add
     supersede_existing_records
 
@@ -70,15 +72,7 @@ class EmailsController < ApplicationController
   end
 
   def duration
-    if params[:duration]
-      params[:duration].to_i.minutes
-    else
-      default_duration
-    end
-  end
-
-  def default_duration
-    120.minutes
+    params.fetch(:duration, DEFAULT_DURATION).to_i.minutes
   end
 
   def supersede_existing_records
