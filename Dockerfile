@@ -1,4 +1,4 @@
-FROM ruby:3.2.2-alpine3.18
+FROM ruby:3.2.2-alpine3.19
 
 RUN apk add --update build-base postgresql-contrib postgresql-dev bash libcurl gcompat
 
