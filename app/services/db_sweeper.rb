@@ -10,11 +10,11 @@ class DbSweeper
   private
 
   def age_threshold
-    27.days.ago
+    28.days.ago
   end
 
   def invalidation_threshold
-    27.days.ago
+    28.days.ago
   end
 
   def destroy_saved_progress_threshold

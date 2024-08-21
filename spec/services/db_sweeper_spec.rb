@@ -83,17 +83,17 @@ RSpec.describe DbSweeper do
     context 'invalidating the user data' do
       before :each do
         create(:saved_form, created_at: 39.days.ago)
-        create(:saved_form, created_at: 26.days.ago)
+        create(:saved_form, created_at: 27.days.ago)
       end
 
       it 'removes all user data from records over 28 days old' do
         subject.call
 
-        still_valid = SavedForm.where("created_at > ?", 27.days.ago)
+        still_valid = SavedForm.where("created_at > ?", 28.days.ago)
         expect(still_valid.count).to be(1)
         expect(still_valid.first.invalidated?).to be(false)
 
-        invalid = SavedForm.where("created_at < ?", 27.days.ago)
+        invalid = SavedForm.where("created_at < ?", 28.days.ago)
         expect(invalid.count).to be(1)
         expect(invalid.first.invalidated?).to be(true)
         expect(invalid.first.user_token.blank?).to be(true)
