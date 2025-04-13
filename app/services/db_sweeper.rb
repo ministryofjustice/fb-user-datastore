@@ -1,6 +1,6 @@
 class DbSweeper
   def call
-    UserData.where("created_at < ?", age_threshold).destroy_all
+    UserData.where("updated_at < ?", age_threshold).destroy_all
     SavedForm.where("created_at < ?", invalidation_threshold).each do |record| 
       record.invalidate_user_fields!
     end
