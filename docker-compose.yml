@@ -1,27 +1,39 @@
 version: '3.4'
 
+networks:
+  app-net:
+    name: fb-app-bridge-network
+  db-net:
+    name: fb-db-bridge-network
+
 services:
   db:
+    container_name: user-datastore-db
     image: postgres:10.9-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
-      POSTGRES_DB: submitter_local
+      POSTGRES_DB: user_datastore_local
+    networks:
+      - db-net
 
-  app:
+  api:
+    container_name: user-datastore-api
     build:
       context: .
       dockerfile: ./Dockerfile
     environment:
-      DATABASE_URL: "postgres://postgres:password@db/submitter_local"
+      DATABASE_URL: "postgres://postgres:password@db/user_datastore_local"
       RAILS_ENV: development
       RAILS_SERVE_STATIC_FILES: "false"
       MAX_IAT_SKEW_SECONDS: "90"
       RAILS_LOG_TO_STDOUT: "true"
       SECRET_KEY_BASE: 'secret_key_base'
-    links:
+      SUBMITTER_URL: http://submitter-api:3000
+      SERVICE_TOKEN_CACHE_ROOT_URL: http://runner-service-token-cache-api:3000
+    depends_on:
       - db
-    ports:
-      - "3000:3000"
-
+    networks:
+      - app-net
+      - db-net
