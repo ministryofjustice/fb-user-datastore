@@ -40,16 +40,27 @@ spec:
             port: 3000
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           successThreshold: {{ .Values.livenessProbe.successThreshold }}
+
         readinessProbe:
           httpGet:
             path: /readiness
             port: 3000
           initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
         # non-secret env vars
         # defined in config_map.yaml
+
+        resources:
+          requests:
+            cpu: {{ .Values.resources.requests.cpu }}
+          limits:
+            cpu: {{ .Values.resources.limits.cpu }}
+
+        
         envFrom:
           - configMapRef:
               name: fb-user-datastore-api-env-{{ .Values.environmentName }}
