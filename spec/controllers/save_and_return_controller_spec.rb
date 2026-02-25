@@ -17,6 +17,7 @@ RSpec.describe SaveAndReturnController, type: :controller do
       service_version: "27dc30c9-f7b8-4dec-973a-bd153f6797df",
       user_id: "8acfb3db90002a5fc5b43e71638fc709",
       user_token: "b9cca34d4331399c5f461c0ba1c406aa",
+      secret_question_text: "some text",
       user_data_payload: {
         name_text_1: "Name"
       },
@@ -34,8 +35,16 @@ RSpec.describe SaveAndReturnController, type: :controller do
       uuid = SavedForm.first.id
 
       get :show, params: { service_slug: 'service-slug', uuid: uuid }
-
       expect(response.status).to be(200)
+      expect(response.body).to include(json_hash[:email])
+      expect(response.body).to include(json_hash[:secret_answer])
+      expect(response.body).to include(json_hash[:secret_question])
+      expect(response.body).to include(json_hash[:secret_question_text])
+      expect(response.body).to include(json_hash[:user_id])
+      expect(response.body).to include(json_hash[:user_token])
+      expect(response.body).to include(json_hash[:service_slug])
+      expect(response.body).to include(json_hash[:service_version])
+      expect(response.body).to include(json_hash[:page_slug])
     end
 
     describe 'when not found' do
@@ -54,6 +63,17 @@ RSpec.describe SaveAndReturnController, type: :controller do
         get :show, params: { service_slug: 'some-slug', uuid: uuid }, body: {}.to_json
 
         expect(response.status).to eql(422)
+      end
+
+      it 'returns 400 if too many attemtps' do
+        uuid = SavedForm.first.id
+        3.times do
+          SavedForm.first.increment_attempts!
+        end
+
+        get :show, params: { service_slug: 'some-slug', uuid: uuid }, body: {}.to_json
+
+        expect(response.status).to eql(400)
       end
     end
   end
@@ -202,23 +222,12 @@ RSpec.describe SaveAndReturnController, type: :controller do
   
     describe 'when cant save record' do
       it 'returns 500' do
-        allow_any_instance_of(SavedForm).to receive(:save!).and_return(false)
+        allow_any_instance_of(SavedForm).to receive(:save).and_return(false)
 
         post :create, params: { service_slug: 'service-slug' },
                       body: json_hash.to_json
 
         expect(response.status).to eql(500)
-      end
-    end
-
-    describe 'when bad request' do
-      it 'returns 402' do
-        allow(SavedForm).to receive(:create).and_return(false)
-
-        post :create, params: { service_slug: 'service-slug' },
-                      body: {}.to_json
-
-        expect(response.status).to eql(400)
       end
     end
   end

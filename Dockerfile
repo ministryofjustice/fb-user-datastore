@@ -1,4 +1,4 @@
-FROM ruby:3.1.3-alpine3.16
+FROM ruby:3.2.2-alpine3.19
 
 RUN apk add --update build-base postgresql-contrib postgresql-dev bash libcurl gcompat
 
@@ -17,8 +17,10 @@ COPY . .
 
 ADD https://s3.amazonaws.com/rds-downloads/rds-ca-2019-root.pem ./rds-ca-2019-root.pem
 ADD https://s3.amazonaws.com/rds-downloads/rds-ca-2015-root.pem ./rds-ca-2015-root.pem
+ADD https://truststore.pki.rds.amazonaws.com/eu-west-2/eu-west-2-bundle.pem ./eu-west-bundle.pem
 RUN cat ./rds-ca-2019-root.pem > ./rds-ca-bundle-root.crt
 RUN cat ./rds-ca-2015-root.pem >> ./rds-ca-bundle-root.crt
+RUN cat ./eu-west-bundle.pem >> ./rds-ca-bundle-root.crt
 
 RUN chown -R 1001:appgroup /app
 USER 1001

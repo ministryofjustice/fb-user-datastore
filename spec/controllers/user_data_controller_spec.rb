@@ -3,10 +3,12 @@ require 'rails_helper'
 RSpec.describe UserDataController do
   let(:service_slug) { 'some-service' }
   let(:user_id) { 'user-guid' }
+  let(:request_id) { '12345' }
   let(:headers) {
     {
       'content-type' => 'application/json',
-      'x-access-token-v2' => jwt
+      'x-access-token-v2' => jwt,
+      'X-Request-Id' => request_id
     }
   }
   let(:jwt) { JWT.encode({sub: "foo-#{user_id}", iat: Time.current.to_i}, private_key, 'RS256') }
@@ -17,7 +19,7 @@ RSpec.describe UserDataController do
   let(:fake_service) { double(:service) }
 
   before do
-    allow(ServiceTokenService).to receive(:new).with(service_slug: service_slug).and_return(fake_service)
+    allow(ServiceTokenService).to receive(:new).with(service_slug:, request_id:).and_return(fake_service)
     allow(fake_service).to receive(:public_key).and_return(public_key)
   end
 

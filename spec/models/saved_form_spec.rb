@@ -39,8 +39,6 @@ RSpec.describe SavedForm, type: :model do
         model.increment_attempts!
         expect(model.invalidated?).to be(false)
         model.increment_attempts!
-        expect(model.invalidated?).to be(false)
-        model.increment_attempts!
         expect(model.invalidated?).to be(true)
       end
     end
