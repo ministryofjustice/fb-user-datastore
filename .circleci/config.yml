@@ -187,10 +187,6 @@ workflows:
           context: *context
           requires:
             - test
-          filters:
-            branches:
-              only:
-                - add-deploy-to-live-gate-testing-test-pipeline
       - deploy_to_test_dev:
           context: *context
           requires:
