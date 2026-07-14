@@ -6,7 +6,7 @@ orbs:
 jobs:
   login-to-aws:
     docker: &docker_image
-      - image: "cimg/ruby:3.4-node"
+      - image: "cimg/ruby:3.4.9-node"
     steps:
       - checkout
       - aws-cli/setup:
