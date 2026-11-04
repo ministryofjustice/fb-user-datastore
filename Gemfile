@@ -3,11 +3,11 @@ source 'https://rubygems.org'
 ruby File.read(".ruby-version").strip
 
 gem 'bootsnap', '>= 1.1.0', require: false
-gem 'rails', '~>8.1.3.1'
+gem 'rails', '~> 8.1.4.0'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 7.2'
 gem 'jwt'
-gem 'sentry-rails', '~> 5.13'
+gem 'sentry-rails', '~> 6.0', '>= 6.0.0'
 gem 'sentry-ruby', '~> 5.13'
 gem 'tzinfo-data'
 
