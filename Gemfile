@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby File.read(".ruby-version").strip
+ruby file: ".ruby-version"
 
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'rails', '~>8.1.3.1'
