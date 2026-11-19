@@ -1,4 +1,4 @@
-FROM ruby:4.0.9-alpine
+FROM ruby:4.0.10-alpine
 
 RUN apk add --update build-base postgresql-contrib postgresql-dev bash libcurl gcompat yaml-dev
 
