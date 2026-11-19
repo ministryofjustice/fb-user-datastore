@@ -1,4 +1,4 @@
-FROM ruby:3.4.9-alpine
+FROM ruby:4.0.9-alpine
 
 RUN apk add --update build-base postgresql-contrib postgresql-dev bash libcurl gcompat yaml-dev
 
@@ -10,7 +10,7 @@ WORKDIR /app
 COPY Gemfile* .ruby-version ./
 
 ARG BUNDLE_FLAGS
-RUN gem install bundler
+RUN gem install bundler -v 4.0.24
 RUN bundle install --jobs 2 --retry 3 --no-cache ${BUNDLE_FLAGS}
 
 COPY . .
