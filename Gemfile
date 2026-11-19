@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby file: ".ruby-version"
 
-gem 'bootsnap', '>= 1.1.0', require: false
+gem 'bootsnap', '>= 1.25.0', require: false
 gem 'rails', '~>8.1.3.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 7.2'
